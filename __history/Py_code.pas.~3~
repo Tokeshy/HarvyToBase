@@ -1,0 +1,18 @@
+unit Py_code;
+
+interface
+  Function SheckTheLink(Link : string) : string;
+
+implementation
+uses
+  Main;
+
+//const
+  //ChkLink = 'print("hello World")';
+    // +
+Function SheckTheLink(Link : string) : string;
+begin
+
+end;
+
+end.

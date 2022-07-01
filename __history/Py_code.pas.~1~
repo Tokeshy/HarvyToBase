@@ -1,0 +1,11 @@
+unit Py_code;
+
+interface
+
+implementation
+//uses
+  //S_Func;
+const
+  ChkLink = 'print("hello World")';
+
+end.

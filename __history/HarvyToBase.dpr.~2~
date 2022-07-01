@@ -1,0 +1,14 @@
+program HarvyToBase;
+
+uses
+  Vcl.Forms,
+  Main in 'Main.pas' {Harvy};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(THarvy, Harvy);
+  Application.Run;
+end.

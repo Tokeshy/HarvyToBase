@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.177,=G:\__Git\HarvyToBase\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.945,=G:\__Git\HarvyToBase\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.044,G:\__Git\HarvyToBase\Unit1.pas=G:\__Git\HarvyToBase\Main.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.655,G:\__Git\HarvyToBase\Unit1.pas=G:\__Git\HarvyToBase\Proc.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.044,G:\__Git\HarvyToBase\Unit1.dfm=G:\__Git\HarvyToBase\Main.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.106,G:\__Git\HarvyToBase\Func.pas=G:\__Git\HarvyToBase\S_Func.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.859,G:\__Git\HarvyToBase\Unit1.pas=G:\__Git\HarvyToBase\Py_code.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.975,D:\# Projects\Progs\_DB (MySQL)\HarvyToBase\Project1.dproj=D:\# Projects\Progs\_DB (MySQL)\HarvyToBase\HarvyToBase.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.058,G:\__Git\HarvyToBase\Unit2.pas=G:\__Git\HarvyToBase\Func.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.254,D:\# Projects\Progs\_DB (MySQL)\HarvyToBase\HarvyToBase.dproj=D:\# Projects\Progs\_DB (MySQL)\HarvyToBase\HarvyToBase2.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.775,D:\# Projects\Progs\_DB (MySQL)\HarvyToBase\HarvyToBase2.dproj=D:\# Projects\Progs\_DB (MySQL)\HarvyToBase\HarvyToBase.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.941,=G:\__Git\HarvyToBase\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.824,=C:\Users\Tokeshy\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.805,G:\__Git\HarvyToBase\Proc.pas=G:\__Git\HarvyToBase\S_Proc.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.813,C:\Users\Tokeshy\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Tokeshy\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.710,=C:\Users\Tokeshy\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
