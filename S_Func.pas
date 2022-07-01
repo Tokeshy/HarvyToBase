@@ -41,8 +41,8 @@ begin
   with Harvy.IdSMTP do
   begin  // Setting up Mailing params
     Host := Harvy.Edt_MailHost.Text;  // Mail host; f.e. - 'smtp.Rambler.ru';
-    Username := Harvy.Edt_MailUsername.Text;  // Sender username //  'PtahinEugen@Rambler.ru';
-    Password := Harvy.Edt_MailPass.Text;  // 'Vakamaka4';
+    Username := Harvy.Edt_MailUsername.Text;  // Sender username //  ;
+    Password := Harvy.Edt_MailPass.Text;  // ;
     Port := strtoint(Harvy.Edt_MailPort.Text);  // Port no; f.e. - 587;
   end;
 
