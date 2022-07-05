@@ -4,16 +4,16 @@ interface
   Procedure Delay(mSec:Cardinal);  // +
   Procedure RestoreDefSize;      // +
   Procedure ExpDefSize;         // +
-  Procedure SetProxyParams;      // - переписать на использование Proxy в Python
   Procedure LetSParse; //(IsItTest : boolean); возьму с формы напрямую
 //  Procedure MailNotify;  // +
   Procedure BLSorter (BadLink : string);
+  Procedure DataSorter(Data : array of string; Len : integer);
 
 
 implementation
 uses
   Winapi.Windows, Vcl.Forms, System.SysUtils, Vcl.Dialogs,
-  Main, S_Func, Py_code;
+  Main, S_Func, Py_code, S_Const;
 
 
 Procedure Delay(mSec:Cardinal);
@@ -50,9 +50,9 @@ begin
 end;
 
 
-Procedure SetProxyParams;
+{Procedure SetProxyParams;
 {Setting Proxy Params if needed}
-begin
+{begin
  { if Harvy.Chck_UseProxy.Checked = True then
     with Harvy.IdHTTP_Main.ProxyParams do
       begin
@@ -61,7 +61,7 @@ begin
         ProxyUsername := Harvy.Edt_ProxyUsername.Text;
         ProxyPassword := Harvy.Edt_ProxyPassword.Text;
       end; }
-end;
+{end; }
 
 
 Procedure LetSParse; // (IsItTest : boolean);
@@ -71,17 +71,16 @@ var
   PageHolder : string;
   PyCommand : string;
 begin
-  SetProxyParams;
   for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
   begin
     Harvy.Mem_PyOut.Clear;
-    PyCommand := GetTheLink(IceLink + inttostr(i));  // mixing Python command
+    PyCommand := GetTheLink(IceLink + inttostr(i), Harvy.Chck_UseProxy.Checked);  // mixing Python command
     // Harvy.Py_Engine.LoadDll; // if APP crashed on start uncomment & Play !!!
     Harvy.Py_Engine.ExecString(PyCommand);
     PageHolder := Harvy.Mem_PyOut.Lines.Text;  // rewriting of temp STR by actual value
 
     if Length(PageHolder) > 16600 then
-      ScanPage(PageHolder)  // Try to scan pages
+      ScanPage(PageHolder, inttostr(i))  // Try to scan pages
     else
       BLSorter(inttostr(i)); // othercase means empty page so send it to BadLinks
     Delay (2000);  // just trying to fake an IP block))
@@ -98,4 +97,21 @@ begin
 
 end;
 
+
+Procedure DataSorter(Data : array of string; Len : integer);
+var
+  i : integer;  // simple iterator
+begin
+  if Harvy.ChB_TestMode.Checked = True Then
+    if Len = 5 then
+      for i := 1 to 5 do
+        showmessage(Data[i-1])
+    else if Len = 4 then
+      for i := 1 to 4 do
+        showmessage(Data[i-1]);
+  // else  //написать для else запись в БД
+
+
+
+end;
 end.

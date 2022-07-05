@@ -303,6 +303,10 @@ object Harvy: THarvy
     object PG_ProxyParams: TTabSheet
       Caption = 'proxy'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Lbl_ProxyPort: TLabel
         Left = 14
         Top = 55
@@ -403,6 +407,10 @@ object Harvy: THarvy
     object PG_MailingParams: TTabSheet
       Caption = #1091#1074#1077#1076#1086#1084#1083#1077#1085#1080#1077
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Lbl_MailHost: TLabel
         Left = 14
         Top = 32
@@ -528,6 +536,10 @@ object Harvy: THarvy
     object PG_DBConnectionParams: TTabSheet
       Caption = #1041#1044
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Lbl_DBServer: TLabel
         Left = 14
         Top = 6

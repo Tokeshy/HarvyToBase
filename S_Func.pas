@@ -3,12 +3,13 @@ unit S_Func;
 interface
   Function ShoudWeParce : boolean;  // +
   Function MailNotify : Boolean;  // +
-  Function ScanPage (HtmlBody: string) : {array[1..10] of }string;  {подумать насчёт реализации выходных данных
+  Function ScanPage (HtmlBody: string; LnkID : string) : {array[1..10] of }string;  {подумать насчёт реализации выходных данных
   вообще то можно собирать только основное, а вспомогательные потом по ссылке открывать}
+  Function LineStrip (Line, SepBy : string) : string;
 
 implementation
 uses
-  Main, S_Proc, Py_code, Vcl.Dialogs, System.SysUtils;
+  Main, S_Proc, Py_code, Vcl.Dialogs, System.SysUtils, S_Const;
 
 
 Function ShoudWeParce : boolean;
@@ -41,8 +42,8 @@ begin
   with Harvy.IdSMTP do
   begin  // Setting up Mailing params
     Host := Harvy.Edt_MailHost.Text;  // Mail host; f.e. - 'smtp.Rambler.ru';
-    Username := Harvy.Edt_MailUsername.Text;  // Sender username //  ;
-    Password := Harvy.Edt_MailPass.Text;  // ;
+    Username := Harvy.Edt_MailUsername.Text;  // Sender username //
+    Password := Harvy.Edt_MailPass.Text;  //
     Port := strtoint(Harvy.Edt_MailPort.Text);  // Port no; f.e. - 587;
   end;
 
@@ -67,10 +68,69 @@ begin
   end;
 end;
 
-
-Function ScanPage (HtmlBody: string) : {array [1..10] of} string;
+Function LineStrip (Line, SepBy : string) : string;  // SepBy - stop simbol
+var
+  i : integer;  // Simple iterator
 begin
+  delete(Line, ansipos(SepBy, Line), length(Line));
+  for i := 1 to 7 do  // Cleaning from HTML traces
+    if ansipos(StrToReplace[i], Line) > 0 then
+      Line := StringReplace(Line, StrToReplace[i], ' ', [rfReplaceAll]);
+  result := trim(Line);
+end;
 
+
+Function ScanPage (HtmlBody: string; LnkID : string) : {array [1..10] of} string;
+var
+  i : integer;  // simple iterator
+  TempStr : string;  // temp string holder
+  MainInfo : array[1..5] of string;  // Hold main info
+  AddInfo : array[1..4] of string;  // Holding additional info 1-id; 2-Property name; 3-property text; 4-property value;
+  StopPos : integer;
+begin
+  MainInfo[1] := LnkID;
+  Harvy.Mem_PyOut.Clear;
+  delete(HtmlBody, 1, ansipos('<div class="ocB w100">', HtmlBody)); {trimming unnecessary}
+  delete(HtmlBody, ansipos('</tbody></table>', HtmlBody), length(HtmlBody));
+  for i := 1 to 4 do  // Grabbing info
+    {1st & 2nd lines has no system in data so grab manually, 3&4 - routine work}
+    begin
+      if (i = 1) and (ansipos(GeneralInfo[1], HtmlBody) > 0) then
+        TempStr := LineStrip(copy(HtmlBody, ansipos(GeneralInfo[1], HtmlBody) + 19, ansipos('</h1>', HtmlBody)), '</')
+      else if (i = 2) and (ansipos(GeneralInfo[2], HtmlBody) > 0) then
+        TempStr := LineStrip(copy(HtmlBody, ansipos(GeneralInfo[2], HtmlBody) + 3, ansipos('</b>', HtmlBody)), '</')
+      else if ansipos(GeneralInfo[i], HtmlBody) > 0 then
+        begin
+          TempStr := copy(HtmlBody, ansipos(GeneralInfo[i], HtmlBody) + length(GeneralInfo[i]), ansipos('</tr>', HtmlBody));
+          delete(TempStr, 1, ansipos(PropDesc, TempStr) + 16);
+          TempStr := LineStrip(TempStr, '</');
+        end;
+      MainInfo[i+1] := TempStr;  // writing data
+    end;
+
+  DataSorter(MainInfo, 5);
+
+  StopPos := ansipos(MainInfo[5], HtmlBody) + length(MainInfo[5]);
+  TempStr := copy(HtmlBody, StopPos, length(HtmlBody));
+
+  while ansipos(PropDesc, TempStr) > 0 do
+  begin
+    TempStr := copy(TempStr, ansipos(PropName, TempStr) + 17, ansipos(PropNameRU, TempStr));
+    StopPos := StopPos + length(TempStr);
+
+    AddInfo[1] := LnkID;
+    AddInfo[2] := copy(TempStr, 1, ansipos('">', TempStr)-1);
+    AddInfo[3] := LineStrip(copy(TempStr, ansipos(PropNameRU, TempStr) + 16, ansipos('</td>', TempStr)), '</td>');
+    StopPos := StopPos + ansipos(PropNameRU, TempStr) + 16;
+    AddInfo[4] := LineStrip(copy(TempStr, ansipos(PropDesc, TempStr) + 16, ansipos('</td>', TempStr)), '</td>');
+
+    TempStr := copy(HtmlBody, StopPos, length(HtmlBody));
+
+
+    if (length(AddInfo[2]) <> 0) and (length(AddInfo[4]) <> 0)then
+      DataSorter(AddInfo, 4);
+
+  end;
 
 end;
 
