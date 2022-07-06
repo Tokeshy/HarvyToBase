@@ -1,10 +1,9 @@
 unit S_Func;
 
 interface
-  Function ShoudWeParce : boolean;  // +
-  Function MailNotify : Boolean;  // +
-  Function ScanPage (HtmlBody: string; LnkID : string) : {array[1..10] of }string;  {подумать насчёт реализации выходных данных
-  вообще то можно собирать только основное, а вспомогательные потом по ссылке открывать}
+  Function ShoudWeParce : boolean;
+  Function MailNotify : Boolean;
+  Function ScanPage (HtmlBody: string; LnkID : string) : string;
   Function LineStrip (Line, SepBy : string) : string;
 
 implementation
@@ -68,6 +67,7 @@ begin
   end;
 end;
 
+
 Function LineStrip (Line, SepBy : string) : string;  // SepBy - stop simbol
 var
   i : integer;  // Simple iterator
@@ -88,6 +88,7 @@ var
   AddInfo : array[1..4] of string;  // Holding additional info 1-id; 2-Property name; 3-property text; 4-property value;
   StopPos : integer;
 begin
+  DataFoundUpd;
   MainInfo[1] := LnkID;
   Harvy.Mem_PyOut.Clear;
   delete(HtmlBody, 1, ansipos('<div class="ocB w100">', HtmlBody)); {trimming unnecessary}
@@ -129,7 +130,6 @@ begin
 
     if (length(AddInfo[2]) <> 0) and (length(AddInfo[4]) <> 0)then
       DataSorter(AddInfo, 4);
-
   end;
 
 end;

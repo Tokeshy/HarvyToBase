@@ -1,7 +1,4 @@
-﻿[LotMem]
-Coordinates=273,71,53,51
-
-[MainConnection]
+﻿[MainConnection]
 Coordinates=427,141,94,33
 
 [InfoGroup]
@@ -9,12 +6,6 @@ Coordinates=10,10,64,51
 
 [AddCommand]
 Coordinates=427,245,84,33
-
-[DocsMem]
-Coordinates=10,71,62,51
-
-[BadMemo]
-Coordinates=189,10,63,51
 
 [IdSMTP]
 Coordinates=408,337,57,33
@@ -71,5 +62,5 @@ Coordinates=285,132,42,51
 Coordinates=337,132,42,51
 
 []
-Coordinates=427,193,80,33
+Coordinates=189,10,63,51
 

@@ -2,3 +2,6 @@
 __history/
 Win32/
 *.local
+DBmodel.mwb.bak
+HarvyToBase.stat
+HarvyToBase.identcache

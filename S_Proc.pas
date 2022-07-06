@@ -1,13 +1,15 @@
 unit S_Proc;
 
 interface
-  Procedure Delay(mSec:Cardinal);  // +
-  Procedure RestoreDefSize;      // +
-  Procedure ExpDefSize;         // +
-  Procedure LetSParse; //(IsItTest : boolean); возьму с формы напрямую
+  Procedure Delay(mSec:Cardinal);
+  Procedure RestoreDefSize;
+  Procedure ExpDefSize;
+  Procedure LetSParse;
 //  Procedure MailNotify;  // +
   Procedure BLSorter (BadLink : string);
   Procedure DataSorter(Data : array of string; Len : integer);
+  Procedure DataFoundUpd;
+  Procedure CurrPosUpd;
 
 
 implementation
@@ -71,6 +73,10 @@ var
   PageHolder : string;
   PyCommand : string;
 begin
+  with Harvy do
+    Edt_Total.Text := inttostr(strtoint(Edt_ScanTo.text) - strtoint(Edt_ScanFrom.text) + 1);
+  CurrPosUpd;
+
   for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
   begin
     Harvy.Mem_PyOut.Clear;
@@ -93,7 +99,7 @@ Procedure BLSorter(BadLink : string);
 begin
   if Harvy.ChB_TestMode.Checked = True Then
     showmessage('Link for ID ' + BadLink + ' is broken');
-  // написать для else запись в БД
+  // написать для else запись в БД ч-з try..else
 
 end;
 
@@ -103,15 +109,34 @@ var
   i : integer;  // simple iterator
 begin
   if Harvy.ChB_TestMode.Checked = True Then
-    if Len = 5 then
-      for i := 1 to 5 do
-        showmessage(Data[i-1])
-    else if Len = 4 then
-      for i := 1 to 4 do
-        showmessage(Data[i-1]);
-  // else  //написать для else запись в БД
+    for i := 1 to Len do
+      showmessage(Data[i-1]);
+   {else
+     case len of
+        4 : begin #########
 
+            end;
 
+        5 : begin
+
+            end;
+     end;   }
+ // else  //написать для else запись в БД
 
 end;
+
+
+Procedure DataFoundUpd;
+begin
+  Harvy.Edt_DataFounded.Text := inttostr(strtointdef(Harvy.Edt_DataFounded.Text, 0) + 1);
+end;
+
+
+Procedure CurrPosUpd;
+begin
+  Harvy.Edt_CurrPos.Text := inttostr(strtointdef(Harvy.Edt_CurrPos.Text, 0) + 1);
+  Harvy.Edt_LinkScaned.Text := inttostr(strtointdef(Harvy.Edt_LinkScaned.Text, 0) + 1);
+  {написать также для прогресбар"а}
+end;
+
 end.

@@ -4,7 +4,7 @@ object Harvy: THarvy
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'HarvyToBase'
-  ClientHeight = 945
+  ClientHeight = 336
   ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -60,7 +60,7 @@ object Harvy: THarvy
       ParentFont = False
     end
     object Lbl_frf: TLabel
-      Left = 243
+      Left = 248
       Top = 55
       Width = 14
       Height = 16
@@ -73,7 +73,7 @@ object Harvy: THarvy
       ParentFont = False
     end
     object Lbl_frc: TLabel
-      Left = 243
+      Left = 248
       Top = 25
       Width = 14
       Height = 16
@@ -158,55 +158,13 @@ object Harvy: THarvy
       TabOrder = 3
     end
   end
-  object LotMem: TMemo
-    Left = 8
-    Top = 424
-    Width = 728
-    Height = 57
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -7
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    ScrollBars = ssBoth
-    TabOrder = 3
-  end
-  object DocsMem: TMemo
-    Left = 8
-    Top = 510
-    Width = 728
-    Height = 56
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -7
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    ScrollBars = ssBoth
-    TabOrder = 4
-  end
-  object BadMemo: TMemo
-    Left = 8
-    Top = 572
-    Width = 728
-    Height = 56
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -7
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    ScrollBars = ssBoth
-    TabOrder = 5
-  end
   object Btn_Options: TButton
     Left = 436
     Top = 106
     Width = 75
     Height = 25
     Caption = '>>>'
-    TabOrder = 6
+    TabOrder = 3
     OnClick = Btn_OptionsClick
   end
   object PgC_Params: TPageControl
@@ -215,7 +173,7 @@ object Harvy: THarvy
     Width = 250
     Height = 185
     ActivePage = PG_ScanParams
-    TabOrder = 7
+    TabOrder = 4
     object PG_ScanParams: TTabSheet
       Caption = #1089#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
       object Grp_ScanBox: TGroupBox
@@ -303,10 +261,6 @@ object Harvy: THarvy
     object PG_ProxyParams: TTabSheet
       Caption = 'proxy'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Lbl_ProxyPort: TLabel
         Left = 14
         Top = 55
@@ -407,10 +361,6 @@ object Harvy: THarvy
     object PG_MailingParams: TTabSheet
       Caption = #1091#1074#1077#1076#1086#1084#1083#1077#1085#1080#1077
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Lbl_MailHost: TLabel
         Left = 14
         Top = 32
@@ -536,120 +486,14 @@ object Harvy: THarvy
     object PG_DBConnectionParams: TTabSheet
       Caption = #1041#1044
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object Lbl_DBServer: TLabel
-        Left = 14
-        Top = 6
-        Width = 44
-        Height = 16
-        Caption = 'Server'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Lbl_DBUsername: TLabel
-        Left = 14
-        Top = 29
-        Width = 64
-        Height = 16
-        Caption = 'Username'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Lbl_DBPassword: TLabel
-        Left = 14
-        Top = 53
-        Width = 63
-        Height = 16
-        Caption = 'Password'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Lbl_DBPort: TLabel
-        Left = 14
-        Top = 77
-        Width = 28
-        Height = 16
-        Caption = 'Port'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Lbl_DBShema: TLabel
-        Left = 14
-        Top = 101
-        Width = 62
-        Height = 16
-        Caption = 'Database'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Edt_DBServerIP: TEdit
-        Left = 102
-        Top = 5
-        Width = 102
-        Height = 21
-        TabOrder = 0
-      end
-      object Edt_DBUsername: TEdit
-        Left = 102
-        Top = 28
-        Width = 102
-        Height = 21
-        TabOrder = 1
-      end
-      object Edt_DBPassword: TEdit
-        Left = 102
-        Top = 52
-        Width = 102
-        Height = 21
-        PasswordChar = '#'
-        TabOrder = 2
-      end
-      object Edt_DBPortNo: TEdit
-        Left = 102
-        Top = 76
-        Width = 102
-        Height = 21
-        NumbersOnly = True
-        TabOrder = 3
-      end
-      object Cmb_DBConnection: TComboBox
-        Left = 102
-        Top = 100
-        Width = 102
-        Height = 21
-        TabOrder = 4
-        Text = 'Cmb_DBConnection'
-      end
       object Btn_DBConnect: TButton
         Left = 10
         Top = 127
         Width = 75
         Height = 25
         Caption = 'Connect'
-        TabOrder = 5
+        TabOrder = 0
+        OnClick = Btn_DBConnectClick
       end
       object Btn_DBDisconnect: TButton
         Left = 156
@@ -657,7 +501,102 @@ object Harvy: THarvy
         Width = 75
         Height = 25
         Caption = 'Disconnect'
-        TabOrder = 6
+        TabOrder = 1
+        OnClick = Btn_DBDisconnectClick
+      end
+      object Grp_DBParams: TGroupBox
+        Left = 3
+        Top = 0
+        Width = 236
+        Height = 121
+        Caption = 'Current params'
+        TabOrder = 2
+        object Lbl_DBServer: TLabel
+          Left = 14
+          Top = 18
+          Width = 44
+          Height = 16
+          Caption = 'Server'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Lbl_DBUsername: TLabel
+          Left = 14
+          Top = 41
+          Width = 64
+          Height = 16
+          Caption = 'Username'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Lbl_DBPort: TLabel
+          Left = 14
+          Top = 65
+          Width = 28
+          Height = 16
+          Caption = 'Port'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Lbl_DBShema: TLabel
+          Left = 14
+          Top = 89
+          Width = 62
+          Height = 16
+          Caption = 'Database'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Edt_DBUsername: TEdit
+          Left = 116
+          Top = 40
+          Width = 102
+          Height = 21
+          ReadOnly = True
+          TabOrder = 0
+        end
+        object Edt_DBServerIP: TEdit
+          Left = 116
+          Top = 17
+          Width = 102
+          Height = 21
+          ReadOnly = True
+          TabOrder = 1
+        end
+        object Edt_DBPortNo: TEdit
+          Left = 116
+          Top = 64
+          Width = 102
+          Height = 21
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 2
+        end
+        object Edt_Schema: TEdit
+          Left = 116
+          Top = 88
+          Width = 102
+          Height = 21
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 3
+        end
       end
     end
   end
@@ -673,15 +612,15 @@ object Harvy: THarvy
     Font.Style = []
     ParentFont = False
     ScrollBars = ssBoth
-    TabOrder = 8
+    TabOrder = 5
   end
   object MainConnection: TMyConnection
-    Database = 'icetrade'
-    Username = 'Gerasim'
+    Database = 'icetradesch'
+    Username = 'HarvyToBase'
     Server = 'localhost'
     Left = 40
     Top = 216
-    EncryptedPassword = '89FF96FF89FF9EFFCCFFC7FFCAFFCAFFC9FFCFFF'
+    EncryptedPassword = 'B7FF9EFF8DFF89FF86FFA0FFAFFF9EFF8CFFDBFFD6FF'
   end
   object AddCommand: TMyCommand
     Connection = MainConnection
