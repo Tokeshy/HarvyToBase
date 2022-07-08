@@ -14,14 +14,19 @@ const
   PropNameRU = '<td class="lft">';
   PropDesc = '<td class="afv">';
 
-  StrToReplace : array[1..7] of string = ('&quot;', '<br />', '<strong>',
-    '</strong>', '&nbsp;', '<span class="nw">', '</span>');  // traces of HTML to clean))
+  StrToReplace : array[1..8] of string = ('&quot;', '<br />', '<strong>',
+    '</strong>', '&nbsp;', '<span class="nw">', '</span>', PropNameRU);  // traces of HTML to clean))
 
   GeneralInfo : array[1..4] of string = ('Процедура закупки №', '<b>',
     'Отрасль', 'Краткое описание предмета закупки');
 
 {Py_Code section}
   RequestPrefix = 'from requests import get' + #13#10;
+
+{MySQL section}
+  BLUpd = 'INSERT INTO `icetradesch`.`badlinks` (`BadLinkID`) VALUES (''';
+  DetaildUpd = 'INSERT INTO `icetradesch`.`dealdetailedinfo` (`LinkID`, `PropertyName`, `PropNameExt`, `PropertyValue`) VALUES (''';
+  GeneralUpd = 'INSERT INTO `icetradesch`.`generalinfo` (`LinkID`, `DealID`, `StatusInfo`, `Industry`, `ShortDesc`) VALUES (''';
 
 implementation
 

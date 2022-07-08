@@ -10,6 +10,8 @@ interface
   Procedure DataSorter(Data : array of string; Len : integer);
   Procedure DataFoundUpd;
   Procedure CurrPosUpd;
+  Procedure DBConnection;
+  Procedure MakeInsert(InsText : string);
 
 
 implementation
@@ -74,8 +76,11 @@ var
   PyCommand : string;
 begin
   with Harvy do
-    Edt_Total.Text := inttostr(strtoint(Edt_ScanTo.text) - strtoint(Edt_ScanFrom.text) + 1);
-  CurrPosUpd;
+    begin
+      Edt_Total.Text := inttostr(strtointdef(Edt_ScanTo.text, 0) - strtointdef(Edt_ScanFrom.text, 0) + 1);
+      PB_TotalProgress.max := strtointdef(Edt_Total.Text, 0);
+    end;
+//  CurrPosUpd;
 
   for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
   begin
@@ -89,7 +94,7 @@ begin
       ScanPage(PageHolder, inttostr(i))  // Try to scan pages
     else
       BLSorter(inttostr(i)); // othercase means empty page so send it to BadLinks
-    Delay (2000);  // just trying to fake an IP block))
+    Delay (1500);  // just trying to fake an IP block))
   end;
 end;
 
@@ -97,10 +102,11 @@ end;
 Procedure BLSorter(BadLink : string);
 {Just sorting Bad links dependenly from App mode (Test\Normal)}
 begin
+  CurrPosUpd;
   if Harvy.ChB_TestMode.Checked = True Then
-    showmessage('Link for ID ' + BadLink + ' is broken');
-  // написать для else запись в БД ч-з try..else
-
+    showmessage('Link for ID ' + BadLink + ' is broken')
+  else
+    MakeInsert(BLUpd + BadLink + ''');');
 end;
 
 
@@ -110,19 +116,9 @@ var
 begin
   if Harvy.ChB_TestMode.Checked = True Then
     for i := 1 to Len do
-      showmessage(Data[i-1]);
-   {else
-     case len of
-        4 : begin #########
-
-            end;
-
-        5 : begin
-
-            end;
-     end;   }
- // else  //написать для else запись в БД
-
+      showmessage(Data[i-1])
+  else
+    MakeInsert(CreateInsText(Data, Len));
 end;
 
 
@@ -134,9 +130,52 @@ end;
 
 Procedure CurrPosUpd;
 begin
-  Harvy.Edt_CurrPos.Text := inttostr(strtointdef(Harvy.Edt_CurrPos.Text, 0) + 1);
-  Harvy.Edt_LinkScaned.Text := inttostr(strtointdef(Harvy.Edt_LinkScaned.Text, 0) + 1);
-  {написать также для прогресбар"а}
+  with Harvy do
+    begin
+      Edt_CurrPos.Text := inttostr(strtointdef(Harvy.Edt_CurrPos.Text, 0) + 1);
+      Edt_LinkScaned.Text := inttostr(strtointdef(Harvy.Edt_LinkScaned.Text, 0) + 1);
+      PB_TotalProgress.position := PB_TotalProgress.position + 1;
+    end;
 end;
+
+
+Procedure DBConnection;
+begin
+  with Harvy.MainConnection do
+    begin
+      if connected
+        then connected := False;
+      try
+        connected := True;
+        Harvy.Edt_DBServerIP.Text := server;
+        Harvy.Edt_DBUsername.Text := username;
+        Harvy.Edt_DBPortNo.Text := inttostr(port);
+        Harvy.Edt_Schema.Text := database;
+        messagedlg('Connection succeeded.', mtInformation, [mbOK], 0);
+      except
+        messagedlg('Failed to connect to DB.', mtError, [mbOK], 0);
+      end;
+    end;
+end;
+
+
+Procedure MakeInsert(InsText : string);
+begin
+  try
+    with Harvy.AddCommand do
+      begin
+        if not connection.connected
+          then connection.connected := True;
+        if not autocommit
+          then autocommit := True;
+        SQL.Clear;
+        SQL.Text := InsText;
+        Execute;
+      end;
+  except
+    {make log file ?}
+  end;
+end;
+
 
 end.

@@ -27,7 +27,7 @@ uses
   Vcl.ComCtrls, IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase,
   IdSMTP, IdMessage, IdUserPassProvider, MyDacVcl, S_Func, S_Proc, PythonEngine,
   IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL,
-  IdIntercept, Vcl.PythonGUIInputOutput, S_Const;
+  IdIntercept, Vcl.PythonGUIInputOutput, S_Const, IdAttachment;
 
 type
   THarvy = class(TForm)
@@ -124,21 +124,7 @@ end;
 
 procedure THarvy.Btn_DBConnectClick(Sender: TObject);
 begin
-  with MainConnection do
-    begin
-      if connected
-        then connected := False;
-      try
-        connected := True;
-        Edt_DBServerIP.Text := server;
-        Edt_DBUsername.Text := username;
-        Edt_DBPortNo.Text := inttostr(port);
-        Edt_Schema.Text := database;
-        messagedlg('Connection succeeded.', mtInformation, [mbOK], 0);
-      except
-        messagedlg('Failed to connect to DB.', mtError, [mbOK], 0);
-      end;
-    end;
+  DBConnection;
 end;
 
 procedure THarvy.Btn_DBDisconnectClick(Sender: TObject);
@@ -172,9 +158,10 @@ end;
 procedure THarvy.Btn_ScanClick(Sender: TObject);
 begin
   {checking if connected to DB and is it test mode}
+  PB_TotalProgress.position := 0;
   if ShoudWeParce then
     LetSParse;
-
+  {create compleete message}
     {¬крутить в проект необходимые DLL
     распаковывать при запуске если не существует в папку с exe
     соответственно этот путь мен€ть дл€ PythonEngine как путь к DLL}

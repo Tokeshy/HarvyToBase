@@ -5,6 +5,7 @@ interface
   Function MailNotify : Boolean;
   Function ScanPage (HtmlBody: string; LnkID : string) : string;
   Function LineStrip (Line, SepBy : string) : string;
+  Function CreateInsText (data: array of string; len : integer) : string;
 
 implementation
 uses
@@ -21,8 +22,11 @@ begin
   else if not Harvy.MainConnection.Connected then
     begin
       MessageDlg(ErrDB, mtError, [mbOk] , 0);
-      result := False
-    end;
+      result := False;
+      DBConnection;
+    end
+  else if Harvy.MainConnection.Connected then
+    result := True;
 end;
 
 
@@ -73,7 +77,7 @@ var
   i : integer;  // Simple iterator
 begin
   delete(Line, ansipos(SepBy, Line), length(Line));
-  for i := 1 to 7 do  // Cleaning from HTML traces
+  for i := 1 to 8 do
     if ansipos(StrToReplace[i], Line) > 0 then
       Line := StringReplace(Line, StrToReplace[i], ' ', [rfReplaceAll]);
   result := trim(Line);
@@ -89,6 +93,7 @@ var
   StopPos : integer;
 begin
   DataFoundUpd;
+  CurrPosUpd;
   MainInfo[1] := LnkID;
   Harvy.Mem_PyOut.Clear;
   delete(HtmlBody, 1, ansipos('<div class="ocB w100">', HtmlBody)); {trimming unnecessary}
@@ -127,11 +132,28 @@ begin
 
     TempStr := copy(HtmlBody, StopPos, length(HtmlBody));
 
-
     if (length(AddInfo[2]) <> 0) and (length(AddInfo[4]) <> 0)then
       DataSorter(AddInfo, 4);
   end;
-
 end;
+
+
+Function CreateInsText (data: array of string; len : integer) : string;
+var
+  i : integer;
+  TempText : string;
+begin
+  if len = 4
+    then TempText := DetaildUpd
+  else if len = 5
+    then TempText := GeneralUpd;
+
+  for i := 0 to len - 2 do
+    TempText := TempText + data[i] + ''',''';
+
+  TempText := TempText + data[len-1] + ''');';
+  result := TempText;
+end;
+
 
 end.
