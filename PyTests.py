@@ -36,5 +36,10 @@
 
 #print(r.text)
 
-a = 'a##b##c##d'
-print(a.split('##'))
+#a = 'a##b##c##d'
+#print(a.split('##'))
+
+import urllib.request
+...
+# Download the file from `url` and save it locally under `file_name`:
+urllib.request.urlretrieve('https://github.com/Tokeshy/HarvyToBase/raw/main/DLL/x32/python310.dll', 'G:\__Git\HarvyToBase\Dll\dhskdfhksdfh.dll')

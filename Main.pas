@@ -4,19 +4,6 @@ for current settings of Python engine and used DLL (python310.dll)
 python v.3.10.5 x32 needed you may also install "requests" lib for normal work
 you can change it by playing w "Py_Engine" settings}
 
-{DB short description:
-in general You can find DB files in project files (DBmodel.mwb - model file;
-GenerateShema.sql - file for creation of shema).
-tables:
-badlinks - Table f only contains not working links, wich can become working w time
-    | ID - inner id  |  BadLinkId - bad link it self
-generalinfo - Table f general info storing
-    | LinkID - link | DealID - ID in IceTrade structure  | StatusInfo - Deal Status info
-    | Industry - Deal lot industry  | ShortDesc - short description of Lot for deal
-dealdetailedinfo - Table f all the founded info about deal
-    | ID - auto increment id number  | LinkID - PK f deal | PropertyName - Property name
-    | PropertyValue - contain value it self
- }
 interface
 
 uses
@@ -27,7 +14,7 @@ uses
   Vcl.ComCtrls, IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase,
   IdSMTP, IdMessage, IdUserPassProvider, MyDacVcl, S_Func, S_Proc, PythonEngine,
   IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL,
-  IdIntercept, Vcl.PythonGUIInputOutput, S_Const, IdAttachment;
+  IdIntercept, Vcl.PythonGUIInputOutput, S_Const, IdAttachment, ShellAPI;
 
 type
   THarvy = class(TForm)
@@ -93,6 +80,7 @@ type
     Py_GUIInOut: TPythonGUIInputOutput;
     Edt_Schema: TEdit;
     Grp_DBParams: TGroupBox;
+    Btn_PickUpProxy: TButton;
     procedure Btn_ScanClick(Sender: TObject);
     procedure Edt_ScanToClick(Sender: TObject);
     procedure Edt_ScanFromClick(Sender: TObject);
@@ -100,6 +88,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure Btn_DBConnectClick(Sender: TObject);
     procedure Btn_DBDisconnectClick(Sender: TObject);
+    procedure Btn_PickUpProxyClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -142,6 +132,20 @@ begin
     RestoreDefSize;
 end;
 
+
+procedure THarvy.Btn_PickUpProxyClick(Sender: TObject);
+begin
+  ShellExecute(0, 'open', FreeProxy, '', '', SW_SHOWNORMAL);
+end;
+
+procedure THarvy.FormCreate(Sender: TObject);
+begin
+  {check for DLL and correct params}
+  if not fileexists(GetCurrentDir + '\python310.dll') then
+    GetDll(GetCurrentDir) else
+
+  //ShowMessage('Current directory = ' + GetCurrentDir);
+end;
 
 procedure THarvy.FormShow(Sender: TObject);
 begin

@@ -12,12 +12,14 @@ interface
   Procedure CurrPosUpd;
   Procedure DBConnection;
   Procedure MakeInsert(InsText : string);
+  Procedure GetDll(Location : string);
 
 
 implementation
 uses
   Winapi.Windows, Vcl.Forms, System.SysUtils, Vcl.Dialogs,
-  Main, S_Func, Py_code, S_Const;
+  Main, S_Func, Py_code, S_Const,
+  system.Classes;
 
 
 Procedure Delay(mSec:Cardinal);
@@ -177,5 +179,19 @@ begin
   end;
 end;
 
+
+Procedure GetDll(Location : string);
+var
+  PyCommand : string;
+  DllPath : string;
+begin
+  DllPath := Location + '\python310.dll';
+  PyCommand := LoadDll + DllLink + ''', ''' + DllPath + ''')';
+  Harvy.Py_Engine.ExecString(PyCommand);
+  if fileexists(DllPath)
+    then Harvy.Py_Engine.DllPath := Location
+  else
+    messagedlg(DllFailed, mtError, [mbOK], 0);
+end;
 
 end.

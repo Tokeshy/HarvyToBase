@@ -1,0 +1,7 @@
+Tables: 
+ badlinks - Table f only contains not working links, wich can become working w time 
+  | ID - inner id | BadLinkId - bad link it self 
+ generalinfo - Table f general info storing 
+  | LinkID - link | DealID - ID in IceTrade structure | StatusInfo - Deal Status info | Industry - Deal lot industry | 
+ ShortDesc - short description of Lot for deal dealdetailedinfo - Table f all the founded info about deal 
+  | ID - auto increment id number | LinkID - PK f deal | PropertyName - Property name | PropertyValue - contain value it self

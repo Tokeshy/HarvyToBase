@@ -13,6 +13,7 @@ object Harvy: THarvy
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -172,7 +173,7 @@ object Harvy: THarvy
     Top = 8
     Width = 250
     Height = 185
-    ActivePage = PG_ScanParams
+    ActivePage = PG_DBConnectionParams
     TabOrder = 4
     object PG_ScanParams: TTabSheet
       Caption = #1089#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
@@ -356,6 +357,15 @@ object Harvy: THarvy
         Height = 21
         PasswordChar = '#'
         TabOrder = 4
+      end
+      object Btn_PickUpProxy: TButton
+        Left = 160
+        Top = 129
+        Width = 79
+        Height = 25
+        Caption = 'Pick up proxy'
+        TabOrder = 5
+        OnClick = Btn_PickUpProxyClick
       end
     end
     object PG_MailingParams: TTabSheet
@@ -611,8 +621,10 @@ object Harvy: THarvy
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 5
+    Visible = False
   end
   object MainConnection: TMyConnection
     Database = 'icetradesch'
@@ -649,7 +661,7 @@ object Harvy: THarvy
   end
   object Py_Engine: TPythonEngine
     DllName = 'python310.dll'
-    DllPath = 'G:\__Git\HarvyToBase\DLL\x32'
+    DllPath = 'G:\__Git\HarvyToBase\Dll'
     APIVersion = 1013
     RegVersion = '3.10.5'
     UseLastKnownVersion = False
