@@ -19,7 +19,7 @@ implementation
 uses
   Winapi.Windows, Vcl.Forms, System.SysUtils, Vcl.Dialogs,
   Main, S_Func, Py_code, S_Const,
-  system.Classes;
+  ShellAPI;
 
 
 Procedure Delay(mSec:Cardinal);
@@ -87,7 +87,7 @@ begin
   for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
   begin
     Harvy.Mem_PyOut.Clear;
-    PyCommand := GetTheLink(IceLink + inttostr(i), Harvy.Chck_UseProxy.Checked);  // mixing Python command
+    PyCommand := GetTheLink(Const_IceLink + inttostr(i), Harvy.Chck_UseProxy.Checked);  // mixing Python command
     // Harvy.Py_Engine.LoadDll; // if APP crashed on start uncomment & Play !!!
     Harvy.Py_Engine.ExecString(PyCommand);
     PageHolder := Harvy.Mem_PyOut.Lines.Text;  // rewriting of temp STR by actual value
@@ -98,6 +98,7 @@ begin
       BLSorter(inttostr(i)); // othercase means empty page so send it to BadLinks
     Delay (1500);  // just trying to fake an IP block))
   end;
+  messagedlg(Const_WorkDone, mtInformation, [mbOK], 0);
 end;
 
 
@@ -108,7 +109,7 @@ begin
   if Harvy.ChB_TestMode.Checked = True Then
     showmessage('Link for ID ' + BadLink + ' is broken')
   else
-    MakeInsert(BLUpd + BadLink + ''');');
+    MakeInsert(Const_BLUpd + BadLink + ''');');
 end;
 
 
@@ -182,16 +183,11 @@ end;
 
 Procedure GetDll(Location : string);
 var
-  PyCommand : string;
-  DllPath : string;
+  MessageText : string;
 begin
-  DllPath := Location + '\python310.dll';
-  PyCommand := LoadDll + DllLink + ''', ''' + DllPath + ''')';
-  Harvy.Py_Engine.ExecString(PyCommand);
-  if fileexists(DllPath)
-    then Harvy.Py_Engine.DllPath := Location
-  else
-    messagedlg(DllFailed, mtError, [mbOK], 0);
+  MessageText := 'Download DLL into ' + Location +' and re-try after.';
+  messagedlg(MessageText, mtInformation, [mbOK], 0);
+  ShellExecute(0, 'open', Const_DllLink, '', '', SW_SHOWNORMAL);
 end;
 
 end.

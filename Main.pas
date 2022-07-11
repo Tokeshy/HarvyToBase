@@ -135,16 +135,16 @@ end;
 
 procedure THarvy.Btn_PickUpProxyClick(Sender: TObject);
 begin
-  ShellExecute(0, 'open', FreeProxy, '', '', SW_SHOWNORMAL);
+  ShellExecute(0, 'open', Const_FreeProxy, '', '', SW_SHOWNORMAL);
 end;
 
 procedure THarvy.FormCreate(Sender: TObject);
 begin
   {check for DLL and correct params}
   if not fileexists(GetCurrentDir + '\python310.dll') then
-    GetDll(GetCurrentDir) else
-
-  //ShowMessage('Current directory = ' + GetCurrentDir);
+    GetDll(GetCurrentDir)
+  else
+    Py_Engine.DllPath := GetCurrentDir;
 end;
 
 procedure THarvy.FormShow(Sender: TObject);
