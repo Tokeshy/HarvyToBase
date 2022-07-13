@@ -12,7 +12,7 @@ const
   Const_WorkDone = 'Work done - parsing complete';
 
 {Links}
-  Const_IceLink = 'http://www.icetrade.by/tenders/all/view/';
+  Const_IceLink = 'https://icetrade.by/tenders/all/view/';
   Const_DllLink = 'https://github.com/Tokeshy/HarvyToBase/raw/main/DLL/python310.dll';
   Const_FreeProxy = 'https://spys.one/en/';
 
@@ -27,6 +27,9 @@ const
 
 {Py_Code section}
   Const_RequestPrefix = 'from requests import get' + #13#10;
+  Const_ProxyNA = 'import requests' + #13#10 + 'session = requests.Session()'
+    + #13#10 + 'session.proxies = {' + #13#10;
+  Const_ProxyWA = '';
 
 {MySQL section}
   Const_BLUpd = 'INSERT INTO `icetradesch`.`badlinks` (`BadLinkID`) VALUES (''';

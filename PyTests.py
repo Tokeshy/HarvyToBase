@@ -39,7 +39,26 @@
 #a = 'a##b##c##d'
 #print(a.split('##'))
 
-import urllib.request
-...
-# Download the file from `url` and save it locally under `file_name`:
-urllib.request.urlretrieve('https://github.com/Tokeshy/HarvyToBase/raw/main/DLL/x32/python310.dll', 'G:\__Git\HarvyToBase\Dll\dhskdfhksdfh.dll')
+
+#import requests
+
+#session = requests.Session()
+
+#session.proxies = {
+#   'http': '5.44.54.16:8080',
+   #'https': '5.44.54.16:8080'
+#}
+
+#url = 'https://icetrade.by/tenders/all/view/111'
+
+#print(session.get(url, verify = False).text)
+
+
+
+import requests
+session = requests.Session()
+session.proxies = {
+   'http':'5.44.54.16:8080',
+}
+print(session.get('http://www.icetrade.by/tenders/all/view/111', verify = False).text)
+

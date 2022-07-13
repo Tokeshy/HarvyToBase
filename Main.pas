@@ -82,6 +82,8 @@ type
     Grp_DBParams: TGroupBox;
     Btn_PickUpProxy: TButton;
     BL_Table: TMyTable;
+    CMB_ProxyType: TComboBox;
+    Lbl_ProxyType: TLabel;
     procedure Btn_ScanClick(Sender: TObject);
     procedure Edt_ScanToClick(Sender: TObject);
     procedure Edt_ScanFromClick(Sender: TObject);

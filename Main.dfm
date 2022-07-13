@@ -315,12 +315,25 @@ object Harvy: THarvy
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Lbl_ProxyType: TLabel
+        Left = 14
+        Top = 127
+        Width = 63
+        Height = 16
+        Caption = #1058#1080#1087' Proxy'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object Chck_UseProxy: TCheckBox
         Left = 14
         Top = 6
-        Width = 209
+        Width = 99
         Height = 17
-        Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1087#1088#1086#1082#1089#1080
+        Caption = #1048#1089#1087'. '#1087#1088#1086#1082#1089#1080
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -349,6 +362,9 @@ object Harvy: THarvy
         Top = 78
         Width = 102
         Height = 21
+        Hint = 'not necessary'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 3
       end
       object Edt_ProxyPassword: TEdit
@@ -356,17 +372,39 @@ object Harvy: THarvy
         Top = 102
         Width = 102
         Height = 21
+        Hint = 'not necessary'
+        ParentShowHint = False
         PasswordChar = '#'
+        ShowHint = True
         TabOrder = 4
       end
       object Btn_PickUpProxy: TButton
-        Left = 160
-        Top = 129
+        Left = 158
+        Top = 2
         Width = 79
         Height = 25
         Caption = 'Pick up proxy'
         TabOrder = 5
         OnClick = Btn_PickUpProxyClick
+      end
+      object CMB_ProxyType: TComboBox
+        Left = 102
+        Top = 126
+        Width = 102
+        Height = 21
+        Style = csDropDownList
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ItemIndex = 0
+        ParentFont = False
+        TabOrder = 6
+        Text = 'http'
+        Items.Strings = (
+          'http'
+          'https')
       end
     end
     object PG_MailingParams: TTabSheet
