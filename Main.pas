@@ -14,7 +14,7 @@ uses
   Vcl.ComCtrls, IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase,
   IdSMTP, IdMessage, IdUserPassProvider, MyDacVcl, S_Func, S_Proc, PythonEngine,
   IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL,
-  IdIntercept, Vcl.PythonGUIInputOutput, S_Const, IdAttachment, ShellAPI;
+  IdIntercept, Vcl.PythonGUIInputOutput, S_Const, IdAttachment, ShellAPI, MemDS;
 
 type
   THarvy = class(TForm)
@@ -81,6 +81,7 @@ type
     Edt_Schema: TEdit;
     Grp_DBParams: TGroupBox;
     Btn_PickUpProxy: TButton;
+    BL_Table: TMyTable;
     procedure Btn_ScanClick(Sender: TObject);
     procedure Edt_ScanToClick(Sender: TObject);
     procedure Edt_ScanFromClick(Sender: TObject);
@@ -90,6 +91,7 @@ type
     procedure Btn_DBDisconnectClick(Sender: TObject);
     procedure Btn_PickUpProxyClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Chck_ReparseCheckClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -105,17 +107,17 @@ implementation
 {$R *.dfm}
 
 
-{######################################################################}
-
 procedure THarvy.Edt_ScanToClick(Sender: TObject);
 begin
   Edt_ScanTo.Clear;
 end;
 
+
 procedure THarvy.Btn_DBConnectClick(Sender: TObject);
 begin
-  DBConnection;
+  Proc_DBConnection;
 end;
+
 
 procedure THarvy.Btn_DBDisconnectClick(Sender: TObject);
 begin
@@ -124,12 +126,13 @@ begin
   messagedlg('Disconnected from DB.', mtInformation, [mbOK], 0);
 end;
 
+
 procedure THarvy.Btn_OptionsClick(Sender: TObject);
 begin
   if Btn_Options.Caption = '>>>' then
-    ExpDefSize
+    Proc_ExpDefSize
   else
-    RestoreDefSize;
+    Proc_RestoreDefSize;
 end;
 
 
@@ -138,18 +141,20 @@ begin
   ShellExecute(0, 'open', Const_FreeProxy, '', '', SW_SHOWNORMAL);
 end;
 
+
 procedure THarvy.FormCreate(Sender: TObject);
 begin
   {check for DLL and correct params}
   if not fileexists(GetCurrentDir + '\python310.dll') then
-    GetDll(GetCurrentDir)
+    Proc_GetDll(GetCurrentDir)
   else
     Py_Engine.DllPath := GetCurrentDir;
 end;
 
+
 procedure THarvy.FormShow(Sender: TObject);
 begin
-  RestoreDefSize;
+  Proc_RestoreDefSize;
 end;
 
 
@@ -163,33 +168,14 @@ procedure THarvy.Btn_ScanClick(Sender: TObject);
 begin
   {checking if connected to DB and is it test mode}
   PB_TotalProgress.position := 0;
-  if ShoudWeParce then
-    LetSParse;
-  {create compleete message}
-    {Вкрутить в проект необходимые DLL
-    распаковывать при запуске если не существует в папку с exe
-    соответственно этот путь менять для PythonEngine как путь к DLL}
-
-  //showmessage(string(MainConnection. .Connected));
-  {сразу получаем длинну ответа, если она меньше 16000 кидаем в BadLink, иначе - передаём дальше}
-  {BadLink - пишем в БД}
-  {Префикс = ID}
-  {Таблицы}
-  {категории по справиочнику BD}
+  if Fnc_ShoudWeParce then
+    Proc_LetSParse;
+end;
 
 
-  {ID у нас есть, соотв линк сможем сгенерить в любой момент
-  }
-
-
-  { сделать форму для тестового вывода (а может и не нужно))  }
-
- { DataCount.Text:='0';
-  PB.Max:=strtoint(ToEd.Text);
-  PBED.Text:=ToEd.Text;
-  aLink:='http://www.icetrade.by/tenders/all/view/';
-  }
-
+procedure THarvy.Chck_ReparseCheckClick(Sender: TObject);
+begin
+  Proc_IsItReParse;
 end;
 
 end.

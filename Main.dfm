@@ -240,6 +240,7 @@ object Harvy: THarvy
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 1
+        OnClick = Chck_ReparseCheckClick
       end
       object ChB_TestMode: TCheckBox
         Left = 12
@@ -675,5 +676,11 @@ object Harvy: THarvy
     Output = Mem_PyOut
     Left = 280
     Top = 272
+  end
+  object BL_Table: TMyTable
+    TableName = 'badlinks'
+    Connection = MainConnection
+    Left = 368
+    Top = 216
   end
 end

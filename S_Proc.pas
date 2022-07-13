@@ -1,28 +1,30 @@
 unit S_Proc;
 
 interface
-  Procedure Delay(mSec:Cardinal);
-  Procedure RestoreDefSize;
-  Procedure ExpDefSize;
-  Procedure LetSParse;
+  Procedure Proc_Delay(mSec:Cardinal);
+  Procedure Proc_RestoreDefSize;
+  Procedure Proc_ExpDefSize;
+  Procedure Proc_LetSParse;
 //  Procedure MailNotify;  // +
-  Procedure BLSorter (BadLink : string);
-  Procedure DataSorter(Data : array of string; Len : integer);
-  Procedure DataFoundUpd;
-  Procedure CurrPosUpd;
-  Procedure DBConnection;
-  Procedure MakeInsert(InsText : string);
-  Procedure GetDll(Location : string);
+  Procedure Proc_BLSorter (BadLink : string);
+  Procedure Proc_DataSorter(Data : array of string; Len : integer);
+  Procedure Proc_DataFoundUpd;
+  Procedure Proc_CurrPosUpd;
+  Procedure Proc_DBConnection;
+  Procedure Proc_ExecSQL(InsText : string);
+  Procedure Proc_GetDll(Location : string);
+  Procedure Proc_IsItReParse;
+  Procedure Proc_GetPage(Postfix, dbID : string; UseProxy, IsReParse : boolean);
 
 
 implementation
 uses
   Winapi.Windows, Vcl.Forms, System.SysUtils, Vcl.Dialogs,
   Main, S_Func, Py_code, S_Const,
-  ShellAPI;
+  ShellAPI, System.UITypes;
 
 
-Procedure Delay(mSec:Cardinal);
+Procedure Proc_Delay(mSec:Cardinal);
 {Sleep Alternative
 difference is not make APP Freeze}
 Var
@@ -38,7 +40,7 @@ Begin
 End;
 
 
-Procedure RestoreDefSize;
+Procedure Proc_RestoreDefSize;
 {Just restoring default size of window}
 begin
   Harvy.ClientWidth := 520;
@@ -47,7 +49,7 @@ begin
 end;
 
 
-Procedure ExpDefSize;
+Procedure Proc_ExpDefSize;
 {Big size of window for advance mode}
 begin
     Harvy.ClientWidth := 784;
@@ -70,50 +72,86 @@ end;
 {end; }
 
 
-Procedure LetSParse; // (IsItTest : boolean);
+Procedure Proc_GetPage(Postfix, dbID : string; UseProxy, IsReParse : boolean);
+var
+  PyCommand : string;
+  PageHolder : string;
+begin
+  Harvy.Mem_PyOut.Clear;
+  PyCommand := GetTheLink(Const_IceLink + Postfix, UseProxy);  // mixing Python command
+  Harvy.Py_Engine.ExecString(PyCommand);
+  PageHolder := Harvy.Mem_PyOut.Lines.Text;  // rewriting of temp STR by actual value
+
+  if not IsReParse then  // Regular parsing
+    if Length(PageHolder) > 16600 then   // it means page is not empty
+      Fnc_ScanPage(PageHolder, Postfix)  // Try to scan pages
+    else
+      Proc_BLSorter(Postfix) // othercase means empty page so send it to BadLinks
+  else  // work w links from DB
+    if Length(PageHolder) > 16600 then
+      begin
+        Fnc_ScanPage(PageHolder, Postfix);
+        Proc_ExecSQL(Const_BLDel + dbID +''');');
+      end;
+
+  Proc_Delay (1500);  // just trying to fake an IP block))
+end;
+
+
+Procedure Proc_LetSParse;
 {Here we parse links}
 var
   i : integer;
-  PageHolder : string;
-  PyCommand : string;
+  UseProxy, ReParse : boolean;
 begin
+  UseProxy := Harvy.Chck_UseProxy.Checked;
+  ReParse := Harvy.Chck_ReparseCheck.Checked;
+
   with Harvy do
     begin
       Edt_Total.Text := inttostr(strtointdef(Edt_ScanTo.text, 0) - strtointdef(Edt_ScanFrom.text, 0) + 1);
       PB_TotalProgress.max := strtointdef(Edt_Total.Text, 0);
     end;
-//  CurrPosUpd;
 
-  for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
-  begin
-    Harvy.Mem_PyOut.Clear;
-    PyCommand := GetTheLink(Const_IceLink + inttostr(i), Harvy.Chck_UseProxy.Checked);  // mixing Python command
-    // Harvy.Py_Engine.LoadDll; // if APP crashed on start uncomment & Play !!!
-    Harvy.Py_Engine.ExecString(PyCommand);
-    PageHolder := Harvy.Mem_PyOut.Lines.Text;  // rewriting of temp STR by actual value
+  if not ReParse then
+    for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
+      Proc_GetPage(inttostr(i), '-', UseProxy, ReParse)
 
-    if Length(PageHolder) > 16600 then
-      ScanPage(PageHolder, inttostr(i))  // Try to scan pages
-    else
-      BLSorter(inttostr(i)); // othercase means empty page so send it to BadLinks
-    Delay (1500);  // just trying to fake an IP block))
-  end;
-  messagedlg(Const_WorkDone, mtInformation, [mbOK], 0);
+  else if ReParse then
+    with Harvy.BL_Table do
+      begin
+        CachedUpdates := True;  // not shure it's needed here check out tomorrow ))
+        if not Connection.Connected then
+          Connection.Connected := True;
+        if not active then
+          Active := True;
+        TableName := 'badlinks';
+        open;
+        while not Eof do
+        begin
+          Proc_GetPage(FieldByName('BadLinkID').AsString, FieldByName('ID').AsString, UseProxy, ReParse);
+          next;
+        end;
+        close;
+      end;
+
+    messagedlg(Const_WorkDone, mtInformation, [mbOK], 0);
 end;
 
 
-Procedure BLSorter(BadLink : string);
+Procedure Proc_BLSorter(BadLink : string);
 {Just sorting Bad links dependenly from App mode (Test\Normal)}
 begin
-  CurrPosUpd;
+  Proc_CurrPosUpd;
   if Harvy.ChB_TestMode.Checked = True Then
     showmessage('Link for ID ' + BadLink + ' is broken')
   else
-    MakeInsert(Const_BLUpd + BadLink + ''');');
+    Proc_ExecSQL(Const_BLUpd + BadLink + ''');');
 end;
 
 
-Procedure DataSorter(Data : array of string; Len : integer);
+Procedure Proc_DataSorter(Data : array of string; Len : integer);
+{if testmode - just show in message, othercase writing to DB}
 var
   i : integer;  // simple iterator
 begin
@@ -121,17 +159,19 @@ begin
     for i := 1 to Len do
       showmessage(Data[i-1])
   else
-    MakeInsert(CreateInsText(Data, Len));
+    Proc_ExecSQL(Fnc_CreateInsText(Data, Len));
 end;
 
 
-Procedure DataFoundUpd;
+Procedure Proc_DataFoundUpd;
+{visual part update))}
 begin
   Harvy.Edt_DataFounded.Text := inttostr(strtointdef(Harvy.Edt_DataFounded.Text, 0) + 1);
 end;
 
 
-Procedure CurrPosUpd;
+Procedure Proc_CurrPosUpd;
+{}
 begin
   with Harvy do
     begin
@@ -142,7 +182,8 @@ begin
 end;
 
 
-Procedure DBConnection;
+Procedure Proc_DBConnection;
+{Setting up connection w DB}
 begin
   with Harvy.MainConnection do
     begin
@@ -162,7 +203,8 @@ begin
 end;
 
 
-Procedure MakeInsert(InsText : string);
+Procedure Proc_ExecSQL(InsText : string);
+{just exec SQL ))}
 begin
   try
     with Harvy.AddCommand do
@@ -181,13 +223,34 @@ begin
 end;
 
 
-Procedure GetDll(Location : string);
+Procedure Proc_GetDll(Location : string);
+{if no DLL - download it}
 var
   MessageText : string;
 begin
   MessageText := 'Download DLL into ' + Location +' and re-try after.';
   messagedlg(MessageText, mtInformation, [mbOK], 0);
   ShellExecute(0, 'open', Const_DllLink, '', '', SW_SHOWNORMAL);
+end;
+
+
+Procedure Proc_IsItReParse;
+{Just playng w visualisation )))}
+begin
+  with Harvy do
+    if Chck_ReparseCheck.Checked then
+      begin
+        ChB_TestMode.Checked := False;
+        ChB_TestMode.Enabled := False;
+        Edt_ScanFrom.Enabled := False;
+        Edt_ScanTo.Enabled := False;
+      end
+    else
+      begin
+        ChB_TestMode.Enabled := True;
+        Edt_ScanFrom.Enabled := True;
+        Edt_ScanTo.Enabled := True;
+      end;
 end;
 
 end.
