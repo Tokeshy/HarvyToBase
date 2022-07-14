@@ -4,8 +4,8 @@ interface
   Procedure Proc_Delay(mSec:Cardinal);
   Procedure Proc_RestoreDefSize;
   Procedure Proc_ExpDefSize;
+  Procedure Proc_MailNotify;
   Procedure Proc_LetSParse;
-//  Procedure MailNotify;  // +
   Procedure Proc_BLSorter (BadLink : string);
   Procedure Proc_DataSorter(Data : array of string; Len : integer);
   Procedure Proc_DataFoundUpd;
@@ -15,13 +15,15 @@ interface
   Procedure Proc_GetDll(Location : string);
   Procedure Proc_IsItReParse;
   Procedure Proc_GetPage(Postfix, dbID : string; UseProxy, IsReParse : boolean);
+  Procedure Proc_SetLang;
 
 
 implementation
 uses
   Winapi.Windows, Vcl.Forms, System.SysUtils, Vcl.Dialogs,
   Main, S_Func, Py_code, S_Const,
-  ShellAPI, System.UITypes;
+  ShellAPI, System.UITypes,
+  Vcl.ComCtrls, Vcl.StdCtrls {for Tfind purposes};
 
 
 Procedure Proc_Delay(mSec:Cardinal);
@@ -58,18 +60,45 @@ begin
 end;
 
 
-{Procedure SetProxyParams;
-{Setting Proxy Params if needed}
-{begin
- { if Harvy.Chck_UseProxy.Checked = True then
-    with Harvy.IdHTTP_Main.ProxyParams do
-      begin
-        ProxyServer := Harvy.Edt_ProxyServerIP.Text;
-        ProxyPort := strtoint(Harvy.Edt_ProxyPortNo.Text);
-        ProxyUsername := Harvy.Edt_ProxyUsername.Text;
-        ProxyPassword := Harvy.Edt_ProxyPassword.Text;
-      end; }
-{end; }
+Procedure Proc_MailNotify;
+{If needed send message to email as task complete alert
+Warning often messages from Harvy comes to spam))}
+var
+  MessageText : string;
+begin
+  if harvy.Chck_ReparseCheck.Checked = True then
+    MessageText := Const_MesReP
+  else
+    MessageText := Const_MesNoRep;
+
+  MessageText := MessageText + ' Where found ' + Harvy.Edt_DataFounded.Text + ' data records from ' + Harvy.Edt_LinkScaned.Text + ' links.';
+
+  with Harvy.IdSMTP do
+    begin  // Setting up Mailing params
+      Host := Harvy.Edt_MailHost.Text;  // Mail host; f.e. - 'smtp.Rambler.ru';
+      Username := Harvy.Edt_MailUsername.Text;  // Sender username
+      Password := Harvy.Edt_MailPass.Text;  //
+      Port := strtoint(Harvy.Edt_MailPort.Text);  // Port no; f.e. - 587;
+    end;
+
+  with Harvy.IdMessage do
+    begin  // Creating mail "Body"
+      Subject := 'Parce Compleet';  // Mail subject
+      Recipients.EMailAddresses := Harvy.Edt_MailTo.Text;  // Mail recipient
+      From.Address := Harvy.Edt_MailUsername.Text;  // Mail sender
+      Body.Text:= MessageText;  // Mail text
+      From.Name:= 'Harvy';  // Sender's name ))
+    end;
+
+  try
+    Harvy.idSMTP.connect;  // establishing connection
+    Harvy.idSMTP.Send(Harvy.idmessage);  // Mail send
+  Except on E:Exception do
+    begin
+      MessageDlg(Const_ErrMail, mtError, [mbOk] , 0);  // if not succeed
+    end;
+  end;
+end;
 
 
 Procedure Proc_GetPage(Postfix, dbID : string; UseProxy, IsReParse : boolean);
@@ -135,7 +164,10 @@ begin
         close;
       end;
 
-    messagedlg(Const_WorkDone, mtInformation, [mbOK], 0);
+  if Harvy.Chck_Mailing.Checked then
+    Proc_MailNotify;
+
+  messagedlg(Const_WorkDone, mtInformation, [mbOK], 0);
 end;
 
 
@@ -171,7 +203,7 @@ end;
 
 
 Procedure Proc_CurrPosUpd;
-{}
+{Updating progress bar}
 begin
   with Harvy do
     begin
@@ -251,6 +283,26 @@ begin
         Edt_ScanFrom.Enabled := True;
         Edt_ScanTo.Enabled := True;
       end;
+end;
+
+
+Procedure Proc_SetLang;
+{Translating the interface}
+var
+  i : integer;
+begin
+  for i := 1 to 3 do  // GroupBox'es
+    (Harvy.FindComponent(Const_GRPBoxLst[i]) as TGroupBox).caption := Const_GRPBTrLst[i][Harvy.CMB_lang.ItemIndex];
+  for i := 1 to 20 do  // Labels
+    (Harvy.FindComponent(Const_LblLst[i]) as TLabel).caption := Const_LblTrLst[i][Harvy.CMB_lang.ItemIndex];
+  for i := 1 to 4 do  // Buttons
+    (Harvy.FindComponent(Const_BtnLst[i]) as TButton).caption := Const_BtnTrLst[i][Harvy.CMB_lang.ItemIndex];
+  for i := 1 to 4 do  // TCheckBoxes
+    (Harvy.FindComponent(Const_ChckLst[i]) as TCheckBox).caption := Const_ChckTrLst[i][Harvy.CMB_lang.ItemIndex];
+  for i := 1 to 4 do  // TabSheets
+    (Harvy.FindComponent(Const_PGCLst[i]) as TTabSheet).caption := Const_PGCTrLst[i][Harvy.CMB_lang.ItemIndex];
+
+
 end;
 
 end.

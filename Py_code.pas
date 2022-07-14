@@ -33,8 +33,6 @@ Proxy w NOA
 //      }
 //      url = 'https://icetrade.by/tenders/all/view/111'
 //      print(session.get(url, verify = False).text)
-
-
 var
   ProxyType : string;
 begin

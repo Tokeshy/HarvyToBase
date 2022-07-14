@@ -2,7 +2,6 @@ unit S_Func;
 
 interface
   Function Fnc_ShoudWeParce : boolean;
-  Function Fnc_MailNotify : Boolean;
   Function Fnc_ScanPage (HtmlBody: string; LnkID : string) : string;
   Function Fnc_LineStrip (Line, SepBy : string) : string;
   Function Fnc_CreateInsText (data: array of string; len : integer) : string;
@@ -28,48 +27,6 @@ begin
       end
     else if Harvy.MainConnection.Connected then
       result := True;
-end;
-
-
-Function Fnc_MailNotify : boolean;
-{If needed send message to email as task complete alert}
-var
-  MessageText : string;
-begin
-  if harvy.Chck_ReparseCheck.Checked = True then
-    MessageText := Const_MesReP
-  else
-    MessageText := Const_MesNoRep;
-
-  MessageText := MessageText + ' Where found ' + Harvy.Edt_DataFounded.Text + ' data records from ' + Harvy.Edt_LinkScaned.Text + ' links.';
-
-  with Harvy.IdSMTP do
-    begin  // Setting up Mailing params
-      Host := Harvy.Edt_MailHost.Text;  // Mail host; f.e. - 'smtp.Rambler.ru';
-      Username := Harvy.Edt_MailUsername.Text;  // Sender username //
-      Password := Harvy.Edt_MailPass.Text;  //
-      Port := strtoint(Harvy.Edt_MailPort.Text);  // Port no; f.e. - 587;
-    end;
-
-  with Harvy.IdMessage do
-    begin  // Creating mail "Body"
-      Subject := 'Parce Compleet';  // Mail subject
-      Recipients.EMailAddresses := Harvy.Edt_MailTo.Text;  // Mail recipient
-      From.Address := Harvy.Edt_MailUsername.Text;  // Mail sender
-      Body.Text:= MessageText;  // Mail text
-      From.Name:= 'Harvy';  // Sender's name ))
-    end;
-
-  try
-    Harvy.idSMTP.connect;  // establishing connection
-    Harvy.idSMTP.Send(Harvy.idmessage);  // Mail send
-    result := True;
-  Except on E:Exception do
-    begin
-      MessageDlg(Const_ErrMail, mtError, [mbOk] , 0);  // if not succeed
-      result := False;
-    end;
-  end;
 end;
 
 

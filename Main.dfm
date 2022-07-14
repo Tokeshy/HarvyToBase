@@ -40,7 +40,7 @@ object Harvy: THarvy
     Max = 999999
     TabOrder = 1
   end
-  object InfoGroup: TGroupBox
+  object Grp_InfoGroup: TGroupBox
     Left = 8
     Top = 43
     Width = 369
@@ -61,7 +61,7 @@ object Harvy: THarvy
       ParentFont = False
     end
     object Lbl_frf: TLabel
-      Left = 248
+      Left = 243
       Top = 55
       Width = 14
       Height = 16
@@ -74,7 +74,7 @@ object Harvy: THarvy
       ParentFont = False
     end
     object Lbl_frc: TLabel
-      Left = 248
+      Left = 243
       Top = 25
       Width = 14
       Height = 16
@@ -160,9 +160,9 @@ object Harvy: THarvy
     end
   end
   object Btn_Options: TButton
-    Left = 436
+    Left = 448
     Top = 106
-    Width = 75
+    Width = 63
     Height = 25
     Caption = '>>>'
     TabOrder = 3
@@ -173,7 +173,7 @@ object Harvy: THarvy
     Top = 8
     Width = 250
     Height = 185
-    ActivePage = PG_ProxyParams
+    ActivePage = PG_ScanParams
     TabOrder = 4
     object PG_ScanParams: TTabSheet
       Caption = #1089#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
@@ -480,7 +480,7 @@ object Harvy: THarvy
         Top = 31
         Width = 102
         Height = 21
-        Hint = 'f.e. "smtp.Rambler.ru"'
+        Hint = 'F.e. "smtp.Rambler.ru"'
         DoubleBuffered = False
         ParentDoubleBuffered = False
         ParentShowHint = False
@@ -492,6 +492,9 @@ object Harvy: THarvy
         Top = 54
         Width = 102
         Height = 21
+        Hint = 'Username@host; f.e. - "Username@Rambler.ru"'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 1
       end
       object Edt_MailPass: TEdit
@@ -499,7 +502,10 @@ object Harvy: THarvy
         Top = 78
         Width = 102
         Height = 21
+        Hint = 'Mail password))'
+        ParentShowHint = False
         PasswordChar = '#'
+        ShowHint = True
         TabOrder = 2
       end
       object Chck_Mailing: TCheckBox
@@ -521,7 +527,10 @@ object Harvy: THarvy
         Top = 102
         Width = 102
         Height = 21
+        Hint = 'F.e. "587"'
         NumbersOnly = True
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 4
       end
       object Edt_MailTo: TEdit
@@ -529,6 +538,9 @@ object Harvy: THarvy
         Top = 126
         Width = 102
         Height = 21
+        Hint = 'Mail recipient'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 5
       end
     end
@@ -664,6 +676,20 @@ object Harvy: THarvy
     ScrollBars = ssBoth
     TabOrder = 5
     Visible = False
+  end
+  object CMB_lang: TComboBox
+    Left = 391
+    Top = 108
+    Width = 49
+    Height = 21
+    Style = csDropDownList
+    ItemIndex = 0
+    TabOrder = 6
+    Text = 'Eng'
+    OnChange = CMB_langChange
+    Items.Strings = (
+      'Eng'
+      'Ru')
   end
   object MainConnection: TMyConnection
     Database = 'icetradesch'

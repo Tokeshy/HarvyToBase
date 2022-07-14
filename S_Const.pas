@@ -37,8 +37,27 @@ const
   Const_GeneralUpd = 'INSERT INTO `icetradesch`.`generalinfo` (`LinkID`, `DealID`, `StatusInfo`, `Industry`, `ShortDesc`) VALUES (''';
   Const_BLDel = 'DELETE FROM `icetradesch`.`badlinks` WHERE (`ID` = ''';
 
-{Translator section}
-  // Const_Lbllist
+{Elemets lists}
+  Const_GRPBoxLst : array[1..3] of string = ('Grp_InfoGroup', 'Grp_ScanBox', 'Grp_DBParams');
+  Const_LblLst : array[1..20] of string = ('Lbl_CurrPos', 'Lbl_DataFounded', 'Lbl_frc', 'Lbl_frf', 'Lbl_ScanFrom', 'Lbl_ScanTo',
+    'Lbl_ProxyServer', 'Lbl_ProxyPort', 'Lbl_ProxyUsername', 'Lbl_ProxyPassword', 'Lbl_ProxyType', 'Lbl_MailHost', 'Lbl_MailUsername',
+    'Lbl_MailPass', 'Lbl_MailPort', 'Lbl_MailTo', 'Lbl_DBServer', 'Lbl_DBUsername', 'Lbl_DBPort', 'Lbl_DBShema' );
+  Const_BtnLst : array[1..4] of string = ('Btn_Scan', 'Btn_PickUpProxy', 'Btn_DBDisconnect', 'Btn_DBConnect');
+  Const_ChckLst : array[1..4] of string = ('Chck_ReparseCheck', 'ChB_TestMode', 'Chck_UseProxy', 'Chck_Mailing');
+  Const_PGCLst : array[1..4] of string = ('PG_ScanParams', 'PG_ProxyParams', 'PG_MailingParams', 'PG_DBConnectionParams');
+
+{Translation}
+  Const_GRPBTrLst : array[1..3] of array[0..1] of string = (('Information about the progress of the scan', 'Информация о ходе сканирования'),
+    ('Scan range', 'Диапазон сканирования'), ('Current params', 'Текущие настр.'));
+  Const_LblTrLst : array[1..20] of array[0..1] of string = (('Current position:', 'Текущая позиция:'), ('Data founded:', 'Найдено данных:'),
+    ('from', 'из'), ('from', 'из'), ('Start index', 'Стартовый индекс'), ('Final index', 'Финальный индекс'), ('Server', 'Сервер'),
+    ('Port', 'Порт'), ('Username', 'Имя польз.'), ('Password', 'Пароль'), ('Proxy type', 'Тип Proxy'), ('Host', 'Хост'), ('Username', 'Имя польз.'),
+    ('Password', 'Пароль'), ('Port', 'Порт'), ('Mail to', 'Получатель'), ('Server', 'Сервер'), ('Username', 'Имя польз.'), ('Port', 'Порт'), ('Database','Имя БД'));
+  Const_BtnTrLst : array[1..4] of array[0..1] of string = (('Scan', 'Сканировать'), ('Pick up proxy', 'подобр. Proxy'),
+    ('Disconnect', 'Откл.'), ('Connect', 'Подкл.'));
+  Const_ChckTrLst : array[1..4] of array[0..1] of string = (('Bad link''s re-parse', 'Репарсинг Bad Link''ов'), ('Test mode (no DB)', 'Тестовый режим (no DB)'),
+    ('Use Proxy', 'Исп. прокси'), ('e-Mail alert', 'Уведомление на почту'));
+  Const_PGCTrLst : array[1..4] of array[0..1] of string = (('Scan params', 'Сканирование'), ('Proxy', 'Proxy'), ('Notify', 'Уведомл.'), ('DB', 'БД'));
 
 implementation
 

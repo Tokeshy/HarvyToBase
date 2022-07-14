@@ -35,7 +35,7 @@ type
     Edt_ScanTo: TEdit;
     Lbl_ScanFrom: TLabel;
     Lbl_ScanTo: TLabel;
-    InfoGroup: TGroupBox;
+    Grp_InfoGroup: TGroupBox;
     Chck_ReparseCheck: TCheckBox;
     IdMessage: TIdMessage;
     IdSMTP: TIdSMTP;
@@ -84,6 +84,7 @@ type
     BL_Table: TMyTable;
     CMB_ProxyType: TComboBox;
     Lbl_ProxyType: TLabel;
+    CMB_lang: TComboBox;
     procedure Btn_ScanClick(Sender: TObject);
     procedure Edt_ScanToClick(Sender: TObject);
     procedure Edt_ScanFromClick(Sender: TObject);
@@ -94,6 +95,7 @@ type
     procedure Btn_PickUpProxyClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Chck_ReparseCheckClick(Sender: TObject);
+    procedure CMB_langChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -157,6 +159,7 @@ end;
 procedure THarvy.FormShow(Sender: TObject);
 begin
   Proc_RestoreDefSize;
+  Proc_SetLang;
 end;
 
 
@@ -178,6 +181,11 @@ end;
 procedure THarvy.Chck_ReparseCheckClick(Sender: TObject);
 begin
   Proc_IsItReParse;
+end;
+
+procedure THarvy.CMB_langChange(Sender: TObject);
+begin
+  Proc_SetLang;
 end;
 
 end.
