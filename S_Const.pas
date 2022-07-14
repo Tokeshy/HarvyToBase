@@ -37,6 +37,9 @@ const
   Const_GeneralUpd = 'INSERT INTO `icetradesch`.`generalinfo` (`LinkID`, `DealID`, `StatusInfo`, `Industry`, `ShortDesc`) VALUES (''';
   Const_BLDel = 'DELETE FROM `icetradesch`.`badlinks` WHERE (`ID` = ''';
 
+{Translator section}
+  // Const_Lbllist
+
 implementation
 
 end.

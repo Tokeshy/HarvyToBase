@@ -40,25 +40,9 @@
 #print(a.split('##'))
 
 
-#import requests
+from requests import get
 
-#session = requests.Session()
+url = 'https://icetrade.by/tenders/all/view/111'
 
-#session.proxies = {
-#   'http': '5.44.54.16:8080',
-   #'https': '5.44.54.16:8080'
-#}
-
-#url = 'https://icetrade.by/tenders/all/view/111'
-
-#print(session.get(url, verify = False).text)
-
-
-
-import requests
-session = requests.Session()
-session.proxies = {
-   'http':'5.44.54.16:8080',
-}
-print(session.get('http://www.icetrade.by/tenders/all/view/111', verify = False).text)
+print(get(url, verify = False).text)
 

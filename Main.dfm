@@ -173,7 +173,7 @@ object Harvy: THarvy
     Top = 8
     Width = 250
     Height = 185
-    ActivePage = PG_ScanParams
+    ActivePage = PG_ProxyParams
     TabOrder = 4
     object PG_ScanParams: TTabSheet
       Caption = #1089#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
