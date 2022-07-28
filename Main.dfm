@@ -247,7 +247,7 @@ object Harvy: THarvy
         Top = 129
         Width = 197
         Height = 17
-        Hint = 'wo DB connection'
+        Hint = 'wo DB connection (max 3 trades)'
         Caption = #1058#1077#1089#1090#1086#1074#1099#1081' '#1088#1077#1078#1080#1084' (no DB)'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -258,6 +258,7 @@ object Harvy: THarvy
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
+        OnClick = ChB_TestModeClick
       end
     end
     object PG_ProxyParams: TTabSheet

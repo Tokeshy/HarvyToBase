@@ -16,7 +16,7 @@ interface
   Procedure Proc_IsItReParse;
   Procedure Proc_GetPage(Postfix, dbID : string; UseProxy, IsReParse : boolean);
   Procedure Proc_SetLang;
-
+  Procedure Proc_InitPositions;
 
 implementation
 uses
@@ -42,6 +42,22 @@ Begin
 End;
 
 
+Procedure Proc_InitPositions;
+{Getting scan range and refreshing progressbar limits
+Clearing start positions and counters}
+begin
+  with Harvy do
+    begin
+      PB_TotalProgress.position := 0;
+      PB_TotalProgress.max := strtointdef(Edt_Total.Text, 0);
+      Edt_CurrPos.Text := '0';
+      Edt_DataFounded.Text := '0';
+      Edt_Total.Text := inttostr(strtointdef(Edt_ScanTo.text, 0) - strtointdef(Edt_ScanFrom.text, 0) + 1);
+      Edt_LinkScaned.Text := '0';
+    end;
+end;
+
+
 Procedure Proc_RestoreDefSize;
 {Just restoring default size of window}
 begin
@@ -54,9 +70,9 @@ end;
 Procedure Proc_ExpDefSize;
 {Big size of window for advance mode}
 begin
-    Harvy.ClientWidth := 784;
-    Harvy.ClientHeight := 199;
-    Harvy.Btn_Options.Caption := '<<<'
+  Harvy.ClientWidth := 784;
+  Harvy.ClientHeight := 199;
+  Harvy.Btn_Options.Caption := '<<<'
 end;
 
 
@@ -94,9 +110,7 @@ begin
     Harvy.idSMTP.connect;  // establishing connection
     Harvy.idSMTP.Send(Harvy.idmessage);  // Mail send
   Except on E:Exception do
-    begin
-      MessageDlg(Const_ErrMail, mtError, [mbOk] , 0);  // if not succeed
-    end;
+    MessageDlg(Const_ErrMail, mtError, [mbOk] , 0);  // if not succeed
   end;
 end;
 
@@ -135,12 +149,6 @@ var
 begin
   UseProxy := Harvy.Chck_UseProxy.Checked;
   ReParse := Harvy.Chck_ReparseCheck.Checked;
-
-  with Harvy do
-    begin
-      Edt_Total.Text := inttostr(strtointdef(Edt_ScanTo.text, 0) - strtointdef(Edt_ScanFrom.text, 0) + 1);
-      PB_TotalProgress.max := strtointdef(Edt_Total.Text, 0);
-    end;
 
   if not ReParse then
     for i := strtoint(Harvy.Edt_ScanFrom.text) to strtoint(Harvy.Edt_ScanTo.text) do  // Page iterator for ours range
@@ -301,8 +309,6 @@ begin
     (Harvy.FindComponent(Const_ChckLst[i]) as TCheckBox).caption := Const_ChckTrLst[i][Harvy.CMB_lang.ItemIndex];
   for i := 1 to 4 do  // TabSheets
     (Harvy.FindComponent(Const_PGCLst[i]) as TTabSheet).caption := Const_PGCTrLst[i][Harvy.CMB_lang.ItemIndex];
-
-
 end;
 
 end.

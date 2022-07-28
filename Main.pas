@@ -96,6 +96,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Chck_ReparseCheckClick(Sender: TObject);
     procedure CMB_langChange(Sender: TObject);
+    procedure ChB_TestModeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -170,13 +171,18 @@ end;
 
 
 procedure THarvy.Btn_ScanClick(Sender: TObject);
+{checking if connected to DB and is it test mode}
 begin
-  {checking if connected to DB and is it test mode}
-  PB_TotalProgress.position := 0;
+  Proc_InitPositions;
   if Fnc_ShoudWeParce then
     Proc_LetSParse;
 end;
 
+
+procedure THarvy.ChB_TestModeClick(Sender: TObject);
+begin
+  Edt_ScanTo.Enabled := not ChB_TestMode.Checked;
+end;
 
 procedure THarvy.Chck_ReparseCheckClick(Sender: TObject);
 begin

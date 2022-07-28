@@ -17,7 +17,10 @@ Function Fnc_ShoudWeParce : boolean;
  if False - can't Parce}
 begin
   if Harvy.ChB_TestMode.Checked = True Then
-    result := True
+    begin
+      Harvy.Edt_ScanTo.Text := inttostr(strtointdef(Harvy.Edt_ScanFrom.Text, 0) + 3);
+      result := True
+    end
   else
     if not Harvy.MainConnection.Connected then
       begin
